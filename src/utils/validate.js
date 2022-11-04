@@ -10,4 +10,17 @@ const hasZero = (num) => {
   if (num.indexOf('0') !== -1) throw new Error('0을 입력하셨습니다. 1부터 9까지의 숫자범위에서 입력해주세요.');
 };
 
-module.exports = { isWrongLength, hasDuplicatedNumbers, hasZero };
+const isNotNumeric = (num) => {
+  if (Number.isNaN(Number(num))) throw new Error('1부터 9로 이루어진 숫자를 입력해주세요');
+};
+
+const isValidNumbers = (num) => {
+  isWrongLength(num);
+  hasDuplicatedNumbers(num);
+  hasZero(num);
+  isNotNumeric(num);
+
+  return true;
+};
+
+module.exports = { isWrongLength, hasDuplicatedNumbers, hasZero, isNotNumeric, isValidNumbers };
