@@ -23,4 +23,4 @@ const isValidNumbers = (num) => {
   return true;
 };
 
-module.exports = { isWrongLength, hasDuplicatedNumbers, hasZero, isNotNumeric, isValidNumbers };
+module.exports = { isValidNumbers };

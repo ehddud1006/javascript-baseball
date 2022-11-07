@@ -1,23 +1,13 @@
-const MissionUtils = require('@woowacourse/mission-utils');
+const { Console, Random } = require('@woowacourse/mission-utils');
 const { isValidNumbers } = require('./utils/validate.js');
+const Game = require('./Game.js');
 
 const printToConsole = (message) => {
-  MissionUtils.Console.print(message);
+  Console.print(message);
 };
 
 const readLine = (message, callback) => {
-  MissionUtils.Console.readLine('숫자를 입력해주세요 : ', callback);
-};
-
-const generateRandomNumberArray = () => {
-  const randomNumberArray = [];
-  while (randomNumberArray.length < 3) {
-    const digit = MissionUtils.Random.pickNumberInRange(1, 9);
-    if (!randomNumberArray.includes(digit)) {
-      randomNumberArray.push(digit);
-    }
-  }
-  return randomNumberArray;
+  Console.readLine(message, callback);
 };
 
 const strikeJudgment = (randomNumberList, userInputNumber) => {
@@ -58,45 +48,53 @@ const matching = (computerInputNumbers, userInputNumbers) => {
 };
 
 const test2 = () => {
-  console.log('hi');
-  readLine('게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.', (answer) => {
-    if (answer === 1) {
-      const randomNumberArray = generateRandomNumberArray();
-      // test(randomNumberArray);
-    } else {
-      MissionUtils.Console.close();
-    }
-  });
+  // console.log('hi');
+  // readLine('게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.', (answer) => {
+  //   if (answer === 1) {
+  //     const randomNumberArray = generateRandomNumberArray();
+  //     // test(randomNumberArray);
+  //   } else {
+  //     MissionUtils.Console.close();
+  //   }
+  // });
 };
 
 const test = (randomNumberArray) => {
+  Console.print(randomNumberArray);
+  let result = '';
   readLine('숫자를 입력해주세요 : ', (answer) => {
     try {
       if (isValidNumbers(answer)) {
         const userInputNumberArray = answer.split('').map((v) => Number(v));
-        const result = matching(randomNumberArray, userInputNumberArray);
-        return result;
+        result = matching(randomNumberArray, userInputNumberArray);
+
+        if (result === '3개의 숫자를 모두 맞히셨습니다! 게임 종료') {
+          Console.print(result);
+          readLine('게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.\n', (answer) => {
+            if (answer === '1') {
+              const newRandomNumberArray = generateRandomNumberArray();
+              test(newRandomNumberArray);
+            } else {
+              Console.close();
+            }
+          });
+        } else {
+          test(randomNumberArray);
+        }
       }
     } catch (error) {
       console.log(error);
     }
   });
+  return result;
 };
 
 class App {
   play() {
     printToConsole('숫자 야구 게임을 시작합니다.');
-    const randomNumberArray = generateRandomNumberArray();
-    console.log(randomNumberArray);
+    game = new Game();
 
-    const result = test(randomNumberArray);
-    console.log('dad', result);
-    if (result === '3개의 숫자를 모두 맞히셨습니다! 게임 종료') {
-      // console.log('gg');
-      test2();
-    } else {
-      test(randomNumberArray);
-    }
+    test(randomNumberArray);
   }
 }
 
