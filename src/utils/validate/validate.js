@@ -19,8 +19,12 @@ const isValidNumbers = (num) => {
   hasDuplicatedNumbers(num);
   hasZero(num);
   isNotNumeric(num);
-
-  return true;
 };
 
-module.exports = { isValidNumbers };
+const isOneOrTwo = (num) => {
+  if (num !== '1' && num !== '2') {
+    throw new Error('1 또는 2만 입력해주세요.');
+  }
+};
+
+module.exports = { isValidNumbers, isOneOrTwo };
